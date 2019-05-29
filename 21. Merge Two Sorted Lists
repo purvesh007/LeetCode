@@ -1,0 +1,72 @@
+Description:
+  Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists
+  
+Example:
+  Input: 1->2->4, 1->3->4
+  Output: 1->1->2->3->4->4
+  
+Solution:
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+ 
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
+    
+        // Base case, If any of the list is empty, return another one
+        if(l1 == NULL) {
+            return l2;
+        }
+        if(l2 == NULL) {
+            return l1;
+        }
+        
+        // Helper Pointer
+        ListNode* newHead = NULL;
+        ListNode* currNode = NULL;
+        
+        // Find the new head
+        if(l1->val < l2->val) {
+            newHead = l1;
+            currNode = l1;
+            l1 = l1->next;
+        }
+        else {
+            newHead = l2;
+            currNode = l2;
+            l2 = l2->next;
+        }
+        
+        // Iterate over both lists
+        while(l1 != NULL || l2 != NULL) {
+            if(l1 != NULL && l2 != NULL){
+                if(l1->val < l2->val) {
+                    currNode->next = l1;
+                    currNode = l1;
+                    l1 = l1->next;
+                }
+                else {
+                    currNode->next = l2;
+                    currNode = l2;
+                    l2 = l2->next;
+                }
+            }
+            else if(l1 != NULL) {
+                currNode->next = l1;
+                return newHead;
+            }
+            else {
+                currNode->next = l2;
+                return newHead;
+            }
+        }
+        return newHead;
+    }
+};
